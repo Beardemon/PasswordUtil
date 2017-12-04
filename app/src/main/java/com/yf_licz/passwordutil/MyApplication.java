@@ -23,7 +23,7 @@ public class MyApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         //默认初始化bmob
-        Bmob.initialize(this, "18e20d26e18642f1e79e6d89d020f6cb");
+        Bmob.initialize(this, "");
         //SharedPreferencesUtils初始化
         SharedPreferencesUtils.init(context);
         // TODO: 2017/11/28  debug版本可视化
