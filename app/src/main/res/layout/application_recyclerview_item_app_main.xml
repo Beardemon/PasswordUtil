@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <data class="RVItemBinding">
+
+        <variable
+            name="userkeybean"
+            type="com.yf_licz.passwordutil.bean.UserKeyBean" />
+
+        <variable
+            name="safekey"
+            type="String" />
+
+    </data>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_content"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="5dp">
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/ll_head"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_del"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/eye_show"
+                    android:scaleType="centerInside" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_body"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@+id/ll_head"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:paddingRight="100dp">
+
+                <TextView
+                    android:id="@+id/tv_rvitem_keyname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text='@{@string/key_name+userkeybean.keyName,default=keyName}'
+                    bind:display_type="@{safekey}" />
+
+                <TextView
+                    android:id="@+id/tv_rvitem_key"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text='@{@string/key+userkeybean.key,default=key}'
+                    bind:display_type="@{safekey}" />
+
+                <TextView
+                    android:id="@+id/tv_rvitem_keydes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text='@{@string/key_des+userkeybean.keyDes,default=keyDes}'
+                    bind:display_type="@{safekey}" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+</layout>
