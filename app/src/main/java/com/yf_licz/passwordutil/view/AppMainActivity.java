@@ -3,12 +3,14 @@ package com.yf_licz.passwordutil.view;
 import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -193,25 +195,61 @@ public class AppMainActivity extends AppCompatActivity {
         appMainBinding.tvItemChangeId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AppMainActivity.this);
+                builder.setTitle("密悦");
+                builder.setMessage("是否切换账号");
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        appMainViewModulel.logOut();
+                        finish();
+                        startActivity(new Intent(AppMainActivity.this, LoginActivity.class));
 
-                appMainViewModulel.logOut();
-                finish();
-                startActivity(new Intent(AppMainActivity.this, LoginActivity.class));
+                    }
+                });
+                builder.show();
+
 
             }
         });
         appMainBinding.tvItemDelAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appMainViewModulel.delAllData();
-                userKeyBeanList.clear();
-                appMainRVAdapter.notifyDataSetChanged();
-                ToastUtils.showShortToast("已经删除本地和远端所有数据");
+                AlertDialog.Builder builder = new AlertDialog.Builder(AppMainActivity.this);
+                builder.setTitle("密悦");
+                builder.setMessage("是否删除所有数据-远端和本地");
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        appMainViewModulel.delAllData();
+                        userKeyBeanList.clear();
+                        appMainRVAdapter.notifyDataSetChanged();
+                        ToastUtils.showShortToast("已经删除本地和远端所有数据");
+
+                    }
+                });
+                builder.show();
+
             }
         });
         appMainBinding.tvItemUploadSafeKey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ToastUtils.showShortToast("todo change safekey");
                 // TODO: 2017/12/3 数据全部解密，然后使用新safekey加密替换本地和服务端数据库
                 // appMainViewModulel.updateSafeKey(SecurityUtils.MD5_Encode("111111"));
             }

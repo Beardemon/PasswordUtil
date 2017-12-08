@@ -54,6 +54,7 @@ dependencies {
 
 
 
+
     compile(project(':net'))
             {
                 //bmob依赖冲突
