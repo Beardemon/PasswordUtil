@@ -122,7 +122,7 @@ public class DataRepository {
     public void getUserKeyData(final UserKeyLiveData<WrapperBean<List<UserKeyBean>>> data) {
         data.setValue(WrapperBean.<List<UserKeyBean>>loading());
         //根据username请求bmob进行数据查询
-        BmobQuery<MyBmobUserKey> myBmobUserKeyQuery = new BmobQuery<MyBmobUserKey>();
+        BmobQuery<MyBmobUserKey> myBmobUserKeyQuery = new BmobQuery<>();
         myBmobUserKeyQuery.addWhereEqualTo("userName", BmobUser.getCurrentUser(MyBmobUser.class).getUsername());
         myBmobUserKeyQuery.setLimit(1);
         myBmobUserKeyQuery.findObjects(new FindListener<MyBmobUserKey>() {
@@ -174,7 +174,7 @@ public class DataRepository {
     public void uploadUserKeyData(final List<UserKeyBean> data) {
         // TODO: 2017/11/29  失败ui处理
         //请求bmob上传用户数据
-        BmobQuery<MyBmobUserKey> myBmobUserKeyQuery = new BmobQuery<MyBmobUserKey>();
+        BmobQuery<MyBmobUserKey> myBmobUserKeyQuery = new BmobQuery<>();
         myBmobUserKeyQuery.addWhereEqualTo("userName", BmobUser.getCurrentUser(MyBmobUser.class).getUsername());
         myBmobUserKeyQuery.setLimit(1);
         myBmobUserKeyQuery.findObjects(new FindListener<MyBmobUserKey>() {
