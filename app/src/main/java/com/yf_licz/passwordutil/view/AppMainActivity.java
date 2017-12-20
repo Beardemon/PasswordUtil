@@ -3,6 +3,7 @@ package com.yf_licz.passwordutil.view;
 import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -31,6 +32,7 @@ import com.yf_licz.passwordutil.R;
 import com.yf_licz.passwordutil.SetSafeKeyPopupWindowBinding;
 import com.yf_licz.passwordutil.bean.UserKeyBean;
 import com.yf_licz.passwordutil.bean.WrapperBean;
+import com.yf_licz.passwordutil.utils.DialogUtil;
 import com.yf_licz.passwordutil.utils.SecurityUtils;
 import com.yf_licz.passwordutil.utils.ToastUtils;
 import com.yf_licz.passwordutil.view.adapter.AppMainRVAdapter;
@@ -54,11 +56,14 @@ import io.reactivex.functions.Consumer;
 
 public class AppMainActivity extends AppCompatActivity {
     private static final String TAG = "AppMainActivity";
+    private Context mContext = AppMainActivity.this;
+    private DialogUtil dialogUtil;
     private AppMainBinding appMainBinding;
     private AppMainViewModule appMainViewModulel;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private AppMainRVAdapter appMainRVAdapter;
     private List<UserKeyBean> userKeyBeanList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,7 @@ public class AppMainActivity extends AppCompatActivity {
 
     private void initView() {
         appMainBinding = DataBindingUtil.setContentView(this, R.layout.application_activity_app_main);
+        dialogUtil = DialogUtil.getInstance(mContext);
         setMaterialUi();
         setRecyclerView();
         drawerItemClick();
@@ -178,12 +184,18 @@ public class AppMainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * recyclerview初始化
+     */
     private void setRecyclerView() {
-        appMainBinding.rvUserData.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        appMainBinding.rvUserData.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         appMainRVAdapter = new AppMainRVAdapter(userKeyBeanList);
         appMainBinding.rvUserData.setAdapter(appMainRVAdapter);
     }
 
+    /**
+     * 测滑菜单栏点击事件
+     */
     private void drawerItemClick() {
         appMainBinding.tvItemAbout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,43 +207,21 @@ public class AppMainActivity extends AppCompatActivity {
         appMainBinding.tvItemChangeId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AppMainActivity.this);
-                builder.setTitle("密悦");
-                builder.setMessage("是否切换账号");
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                dialogUtil.showCommonDialog("是否切换账号（退出应用）", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         appMainViewModulel.logOut();
                         finish();
                         startActivity(new Intent(AppMainActivity.this, LoginActivity.class));
-
                     }
                 });
-                builder.show();
-
-
             }
         });
         appMainBinding.tvItemDelAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AppMainActivity.this);
-                builder.setTitle("密悦");
-                builder.setMessage("是否删除所有数据-远端和本地");
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                dialogUtil.showCommonDialog("是否删除所有数据-远端和本地", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -239,25 +229,35 @@ public class AppMainActivity extends AppCompatActivity {
                         userKeyBeanList.clear();
                         appMainRVAdapter.notifyDataSetChanged();
                         ToastUtils.showShortToast("已经删除本地和远端所有数据");
-
                     }
                 });
-                builder.show();
+
 
             }
         });
         appMainBinding.tvItemUploadSafeKey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast("todo change safekey");
-                // TODO: 2017/12/3 数据全部解密，然后使用新safekey加密替换本地和服务端数据库
-                // appMainViewModulel.updateSafeKey(SecurityUtils.MD5_Encode("111111"));
+                dialogUtil.showCommonDialog("是否更改safekey", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO: 2017/12/3 数据全部解密，然后使用新safekey加密替换本地和服务端数据库
+                        // appMainViewModulel.updateSafeKey(SecurityUtils.MD5_Encode("111111"));
+                    }
+                });
+
             }
         });
         appMainBinding.tvItemShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast("todo share");
+                dialogUtil.showCommonDialog("是否分享本应用", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO: 2017/12/20  share
+                    }
+                });
+
             }
         });
     }

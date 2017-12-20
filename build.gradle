@@ -15,7 +15,7 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        jcenter({url "http://jcenter.bintray.com/"})
         //mvvm google acc框架
         maven { url 'https://maven.google.com' }
         //Bmob的maven仓库地址--必填
