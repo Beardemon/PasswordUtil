@@ -57,7 +57,6 @@ import io.reactivex.functions.Consumer;
 public class AppMainActivity extends AppCompatActivity {
     private static final String TAG = "AppMainActivity";
     private Context mContext = AppMainActivity.this;
-    private DialogUtil dialogUtil;
     private AppMainBinding appMainBinding;
     private AppMainViewModule appMainViewModulel;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -83,7 +82,6 @@ public class AppMainActivity extends AppCompatActivity {
 
     private void initView() {
         appMainBinding = DataBindingUtil.setContentView(this, R.layout.application_activity_app_main);
-        dialogUtil = DialogUtil.getInstance(mContext);
         setMaterialUi();
         setRecyclerView();
         drawerItemClick();
@@ -171,6 +169,7 @@ public class AppMainActivity extends AppCompatActivity {
                             appMainBinding.toolBar.getMenu().getItem(0).setIcon(R.drawable.eye_hint);
                             appMainRVAdapter.setDisplayType("");
                         } else {
+
                             showPopupWindow(appMainViewModulel.getSafeKeyMd5());
 
 
@@ -207,7 +206,7 @@ public class AppMainActivity extends AppCompatActivity {
         appMainBinding.tvItemChangeId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogUtil.showCommonDialog("是否切换账号（退出应用）", new DialogInterface.OnClickListener() {
+                DialogUtil.showCommonDialog(mContext, "是否切换账号（退出应用）", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -221,7 +220,7 @@ public class AppMainActivity extends AppCompatActivity {
         appMainBinding.tvItemDelAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogUtil.showCommonDialog("是否删除所有数据-远端和本地", new DialogInterface.OnClickListener() {
+                DialogUtil.showCommonDialog(mContext, "是否删除所有数据-远端和本地", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -238,7 +237,7 @@ public class AppMainActivity extends AppCompatActivity {
         appMainBinding.tvItemUploadSafeKey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogUtil.showCommonDialog("是否更改safekey", new DialogInterface.OnClickListener() {
+                DialogUtil.showCommonDialog(mContext, "是否更改safekey", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO: 2017/12/3 数据全部解密，然后使用新safekey加密替换本地和服务端数据库
@@ -251,7 +250,7 @@ public class AppMainActivity extends AppCompatActivity {
         appMainBinding.tvItemShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogUtil.showCommonDialog("是否分享本应用", new DialogInterface.OnClickListener() {
+                DialogUtil.showCommonDialog(mContext, "是否分享本应用", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO: 2017/12/20  share
@@ -288,19 +287,18 @@ public class AppMainActivity extends AppCompatActivity {
     }
 
     private void showPopupWindow(final String safeKeyMd5) {
-        View rootView = LayoutInflater.from(this).inflate(R.layout.application_activity_register, null);
+
         final SetSafeKeyPopupWindowBinding setSafeKeyPopupWindowBinding = SetSafeKeyPopupWindowBinding.inflate(LayoutInflater.from(this));
-        View contentView = setSafeKeyPopupWindowBinding.getRoot();
         final PopupWindow popupWindow = new PopupWindow(this);
+        View contentView = setSafeKeyPopupWindowBinding.getRoot();
         popupWindow.setContentView(contentView);
         popupWindow.setFocusable(true);
         popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(LayoutInflater.from(this).inflate(R.layout.application_activity_register, null), Gravity.CENTER, 0, 0);
         setSafeKeyPopupWindowBinding.btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (safeKeyMd5.equals(SecurityUtils.MD5_Encode(setSafeKeyPopupWindowBinding.etSafeKey.getText().toString()))) {
                     ToastUtils.showShortToast("safekey核对正确，更改显示模式");
                     appMainBinding.toolBar.getMenu().getItem(0).setIcon(R.drawable.eye_show);
@@ -310,6 +308,7 @@ public class AppMainActivity extends AppCompatActivity {
                     popupWindow.dismiss();
                     ToastUtils.showShortToast("safekey核对错误，不予更改显示模式");
                 }
+
 
             }
         });
