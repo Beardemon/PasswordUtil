@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "27.0.1"
     defaultConfig {
         applicationId "com.yf_licz_password_utils.passwordutil"
@@ -11,11 +11,22 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi"
+            //            "armeabi"
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs =['libs']
+
         }
     }
     dataBinding {
@@ -52,16 +63,11 @@ dependencies {
     }
     //rxpermissions 权限处理
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    compile(project(':net')) {
+        //bmob依赖冲突
+        exclude group: 'com.squareup.okhttp3'
+        exclude group: 'com.google.code.gson'
+        exclude group: 'io.reactivex'
 
-
-
-    compile(project(':net'))
-            {
-                //bmob依赖冲突
-                exclude group: 'com.squareup.okhttp3'
-                exclude group: 'com.google.code.gson'
-                exclude group: 'io.reactivex'
-
-            }
-
+    }
 }

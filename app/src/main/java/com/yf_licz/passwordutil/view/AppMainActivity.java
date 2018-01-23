@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +27,7 @@ import android.widget.PopupWindow;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yf_licz.passwordutil.AppMainBinding;
+import com.yf_licz.passwordutil.GetStringSalt;
 import com.yf_licz.passwordutil.R;
 import com.yf_licz.passwordutil.SetSafeKeyPopupWindowBinding;
 import com.yf_licz.passwordutil.bean.UserKeyBean;
@@ -129,6 +129,7 @@ public class AppMainActivity extends AppCompatActivity {
         appMainBinding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 ToastUtils.showShortToast("增加一项密码");
                 startActivity(new Intent(AppMainActivity.this, AddNewItemActivity.class));
 

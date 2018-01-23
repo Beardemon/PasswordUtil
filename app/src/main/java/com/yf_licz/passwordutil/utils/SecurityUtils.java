@@ -1,6 +1,8 @@
 package com.yf_licz.passwordutil.utils;
 
 
+import com.yf_licz.passwordutil.GetStringSalt;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
@@ -125,7 +127,7 @@ public class SecurityUtils {
      */
     public static String MD5_Encode(String string) {
         //加盐
-        string = string + "cjmlcz";
+        string = string + GetStringSalt.getSaltFromC();
         MessageDigest md5 = null;
         try {
             md5 = MessageDigest.getInstance("MD5");
