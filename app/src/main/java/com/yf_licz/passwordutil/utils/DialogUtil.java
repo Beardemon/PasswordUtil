@@ -19,13 +19,14 @@ public class DialogUtil {
     private static final String TAG = "DialogUtil";
 
 
-    public static void showDialog(Context context,String titleText, String message, String leftButtonText, String rightButtonText, DialogInterface.OnClickListener leftClick, DialogInterface.OnClickListener rightClick) {
-        AlertDialog.Builder   builder = new AlertDialog.Builder(context);
-        builder.setTitle(titleText == null ? "" : titleText);
+    public static void showDialog(Context context, String titleText, String message, String leftButtonText, String rightButtonText, DialogInterface.OnClickListener leftClick, DialogInterface.OnClickListener rightClick) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(titleText == null ? " " : titleText);
         builder.setMessage(message);
         if (leftButtonText != null) {
             builder.setPositiveButton(leftButtonText, leftClick);
         }
+
         if (rightButtonText != null) {
             builder.setNegativeButton(rightButtonText, rightClick);
         }
@@ -34,18 +35,18 @@ public class DialogUtil {
     }
 
 
-    public static void showCommonDialog(Context context,String message, DialogInterface.OnClickListener leftClick) {
-        AlertDialog.Builder   builder = new AlertDialog.Builder(context);
+    public static void showCommonDialog(Context context, String message, DialogInterface.OnClickListener leftClick) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.app_name));
         builder.setMessage(message);
-        builder.setPositiveButton("确定", leftClick);
-
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
+        builder.setPositiveButton("确定", leftClick);
+
 
         builder.show();
 
