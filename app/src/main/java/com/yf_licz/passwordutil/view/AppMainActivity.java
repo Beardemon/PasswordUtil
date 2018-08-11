@@ -58,6 +58,7 @@ public class AppMainActivity extends AppCompatActivity {
     private static final String TAG = "AppMainActivity";
     private Context mContext = AppMainActivity.this;
     private AppMainBinding appMainBinding;
+
     private AppMainViewModule appMainViewModulel;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private AppMainRVAdapter appMainRVAdapter;
